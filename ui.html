@@ -1,484 +1,701 @@
 <!-- ui.html (Plugin UI) -->
 <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 20px;
-      color: #333;
-      background: #F5F5F5;
-    }
-    
-    .container {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    
-    .steps {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    
-    .step {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex: 1;
-    }
-    
-    .step-circle {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #E5E5E5;
-      color: #888;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    
-    .step-circle.active {
-      background: #18A0FB;
-      color: white;
-    }
-    
-    .step-circle.completed {
-      background: #43B97F;
-      color: white;
-    }
-    
-    .step-line {
-      height: 2px;
-      background: #E5E5E5;
-      flex: 1;
-      margin: 0 8px;
-      margin-bottom: 8px;
-    }
-    
-    .step-line.completed {
-      background: #43B97F;
-    }
-    
-    .step-text {
-      font-size: 12px;
-      text-align: center;
-    }
-    
-    .card {
-      background: white;
-      border-radius: 8px;
-      padding: 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    h3 {
-      margin-top: 0;
-      margin-bottom: 16px;
-      font-size: 16px;
-      font-weight: 600;
-    }
-    
-    button {
-      background: #18A0FB;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 8px 16px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    
-    button:hover {
-      background: #0D8BE0;
-    }
-    
-    button:disabled {
-      background: #E5E5E5;
-      color: #888;
-      cursor: not-allowed;
-    }
-    
-    .button-secondary {
-      background: white;
-      color: #333;
-      border: 1px solid #E5E5E5;
-    }
-    
-    .button-secondary:hover {
-      background: #F5F5F5;
-    }
-    
-    .form-group {
-      margin-bottom: 16px;
-    }
-    
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-    
-    input, select {
-      width: 100%;
-      padding: 8px;
-      border-radius: 4px;
-      border: 1px solid #E5E5E5;
-      font-size: 14px;
-    }
-    
-    .position-selector {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    
-    .position-option {
-      aspect-ratio: 1;
-      border: 1px solid #E5E5E5;
-      border-radius: 4px;
-      background: #F9F9F9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    
-    .position-option.selected {
-      border-color: #18A0FB;
-      background: #E3F2FD;
-    }
-    
-    .position-option:hover {
-      background: #F0F0F0;
-    }
-    
-    .position-center {
-      background: #E5E5E5;
-      border-radius: 4px;
-      color: #333;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .button-row {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 16px;
-    }
-    
-    .icon {
-      font-size: 16px;
-    }
-    
-    .status {
-      margin-top: 12px;
-      font-size: 14px;
-      color: #666;
-    }
-    
-    .success-message {
-      text-align: center;
-      padding: 24px 0;
-    }
-    
-    .success-message .icon {
-      font-size: 48px;
-      color: #43B97F;
-      margin-bottom: 16px;
-    }
+  body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+    background: #F5F5F5;
+  }
 
-    .annotation {
-      font-size: 14px;
-      color: #848484;
-      text-align: right;
-      margin-top: 16px;
-      position: absolute;
-      bottom: 16px;
-      left: auto;
-      right: 16px;
-      padding: 8px 16px;
-      width: fit-content;
-      background: #18a0fb28;
-      border-radius: 8px;
-      outline: 1px solid #18A0FB;
-    }
-    .italics {
-      font-style: italic;
-    }
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
 
-    .annotation a {
-      color: #098be3;
-      text-decoration: none;
-    }
-    .annotation a:hover {
-      text-decoration: underline;
-    }
+  .steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 
-  </style>
-  <div class="annotation"> Made with <span class="italics">vibe</span> by <a href="https://www.linkedin.com/in/pushkarpaul/">Pushkar</a></div>
-  <div class="container">
-    <!-- Progress Tracker -->
-    <div class="steps">
-      <div class="step">
-        <div class="step-circle" id="step1">1</div>
-        <div class="step-text">Select Component</div>
-      </div>
-      <div class="step-line" id="line1"></div>
-      <div class="step">
-        <div class="step-circle" id="step2">2</div>
-        <div class="step-text">Select Frames</div>
-      </div>
-      <div class="step-line" id="line2"></div>
-      <div class="step">
-        <div class="step-circle" id="step3">3</div>
-        <div class="step-text">Apply Changes</div>
-      </div>
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .step-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #E5E5E5;
+    color: #888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .step-circle.active {
+    background: #18A0FB;
+    color: white;
+  }
+
+  .step-circle.completed {
+    background: #43B97F;
+    color: white;
+  }
+
+  .step-line {
+    height: 2px;
+    background: #E5E5E5;
+    flex: 1;
+    margin: 0 8px;
+    margin-bottom: 8px;
+  }
+
+  .step-line.completed {
+    background: #43B97F;
+  }
+
+  .step-text {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  button {
+    background: #18A0FB;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  button:hover {
+    background: #0D8BE0;
+  }
+
+  button:disabled {
+    background: #E5E5E5;
+    color: #888;
+    cursor: not-allowed;
+  }
+
+  .button-secondary {
+    background: white;
+    color: #333;
+    border: 1px solid #E5E5E5;
+  }
+
+  .button-secondary:hover {
+    background: #F5F5F5;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #E5E5E5;
+    font-size: 14px;
+  }
+
+  .position-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+    max-width: 200px;
+    margin: 0 auto 16px auto;
+  }
+
+  .position-option {
+    aspect-ratio: 1;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    background: #F9F9F9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .position-option.selected {
+    border-color: #18A0FB;
+    background: #E3F2FD;
+  }
+
+  .position-option:hover {
+    background: #F0F0F0;
+  }
+
+  .position-center {
+    background: #E5E5E5;
+    border-radius: 4px;
+    color: #333;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  .icon {
+    font-size: 16px;
+  }
+
+  .status {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .success-message {
+    text-align: center;
+    padding: 24px 0;
+  }
+
+  .success-message .icon {
+    font-size: 48px;
+    color: #43B97F;
+    margin-bottom: 16px;
+  }
+
+  .annotation {
+    font-size: 14px;
+    color: #848484;
+    text-align: right;
+    margin-top: 16px;
+    position: absolute;
+    bottom: 16px;
+    left: auto;
+    right: 16px;
+    padding: 8px 16px;
+    width: fit-content;
+    background: #18a0fb28;
+    border-radius: 8px;
+    outline: 1px solid #18A0FB;
+  }
+
+  .italics {
+    font-style: italic;
+  }
+
+  .annotation a {
+    color: #098be3;
+    text-decoration: none;
+  }
+
+  .annotation a:hover {
+    text-decoration: underline;
+  }
+
+  .padding-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .padding-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    transition: opacity 0.2s;
+  }
+
+  .padding-row.hidden {
+    display: none;
+  }
+
+  .padding-input-group {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .padding-icon {
+    position: absolute;
+    left: 8px;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 12px;
+    z-index: 1;
+  }
+
+  .padding-input {
+    width: 100%;
+    padding: 8px 8px 8px 28px;
+    border-radius: 4px;
+    border: 1px solid #E5E5E5;
+    font-size: 14px;
+    background: #F9F9F9;
+  }
+
+  .padding-input:focus {
+    outline: none;
+    border-color: #18A0FB;
+    background: white;
+  }
+
+  .padding-toggle {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    background: #F9F9F9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .padding-toggle:hover {
+    background: #F0F0F0;
+    border-color: #D0D0D0;
+  }
+
+  .padding-toggle.active {
+    background: #E3F2FD;
+    border-color: #18A0FB;
+    color: #18A0FB;
+  }
+
+  .padding-toggle svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .individual-padding {
+    display: none;
+    gap: 8px;
+  }
+
+  .individual-padding.active {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .individual-padding .padding-input-group {
+    flex: 1;
+    min-width: calc(50% - 4px);
+  }
+
+  #individualPaddingRow {
+    align-items: flex-start;
+  }
+</style>
+<!-- <div class="annotation"> Made with <span class="italics">vibe</span> by <a href="https://www.linkedin.com/in/pushkarpaul/">Pushkar</a></div> -->
+<div class="container">
+  <!-- Progress Tracker -->
+  <div class="steps">
+    <div class="step">
+      <div class="step-circle" id="step1">1</div>
+      <div class="step-text">Select Component</div>
     </div>
-    
-    <!-- Step 1: Select Component -->
-    <div class="card" id="step1Card">
-      <h3>Select Component</h3>
-      <p>First, select the component or frame you want to add to your frames.</p>
-      <div class="status" id="componentStatus">No component selected yet</div>
-      <div class="button-row">
-        <button id="selectComponentBtn">Select Component</button>
-      </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step">
+      <div class="step-circle" id="step2">2</div>
+      <div class="step-text">Select Frames</div>
     </div>
-    
-    <!-- Step 2: Select Frames -->
-    <div class="card" id="step2Card" style="display: none;">
-      <h3>Select Frames to Modify</h3>
-      <p>Now, select the frames you want to modify.</p>
-      <div class="status" id="framesStatus">No frames selected yet</div>
-      <div class="button-row">
-        <button class="button-secondary" id="backToStep1Btn">Back</button>
-        <button id="selectFramesBtn">Select Frames</button>
-      </div>
-    </div>
-    
-    <!-- Step 3: Configure Auto Layout -->
-    <div class="card" id="step3Card" style="display: none;">
-      <h3>Configure Auto Layout</h3>
-      
-      <div class="form-group">
-        <label>Component Position</label>
-        <div class="position-selector">
-          <div class="position-option" data-position="top-left"></div>
-          <div class="position-option" data-position="top"></div>
-          <div class="position-option" data-position="top-right"></div>
-          
-          <div class="position-option" data-position="left"></div>
-          <div class="position-center">Frame</div>
-          <div class="position-option" data-position="right"></div>
-          
-          <div class="position-option" data-position="bottom-left"></div>
-          <div class="position-option" data-position="bottom"></div>
-          <div class="position-option" data-position="bottom-right"></div>
-        </div>
-      </div>
-      
-      <div class="form-group">
-        <label>Auto Layout Direction</label>
-        <select id="direction">
-          <option value="HORIZONTAL">Horizontal</option>
-          <option value="VERTICAL">Vertical</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label>Gap Between Items (px)</label>
-        <input type="number" id="gap" value="8" min="0">
-      </div>
-      
-      <div class="form-group">
-        <label>Padding (px)</label>
-        <input type="number" id="padding" value="16" min="0">
-      </div>
-      
-      <div class="button-row">
-        <button class="button-secondary" id="backToStep2Btn">Back</button>
-        <button id="applyChangesBtn">Apply Changes</button>
-      </div>
-    </div>
-    
-    <!-- Success State -->
-    <div class="card" id="successCard" style="display: none;">
-      <div class="success-message">
-        <div class="icon">✓</div>
-        <h3>Changes Applied Successfully!</h3>
-        <p>All frames have been wrapped and components added according to your settings.</p>
-        <button id="resetBtn" style="margin-top: 16px;">Start Over</button>
-      </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step">
+      <div class="step-circle" id="step3">3</div>
+      <div class="step-text">Apply Changes</div>
     </div>
   </div>
-  
-  <script>
-    let currentStep = 0;
-    let selectedPosition = 'right';
-    
-    // Get all DOM elements
-    const step1Circle = document.getElementById('step1');
-    const step2Circle = document.getElementById('step2');
-    const step3Circle = document.getElementById('step3');
-    const line1 = document.getElementById('line1');
-    const line2 = document.getElementById('line2');
-    
-    const step1Card = document.getElementById('step1Card');
-    const step2Card = document.getElementById('step2Card');
-    const step3Card = document.getElementById('step3Card');
-    const successCard = document.getElementById('successCard');
-    
-    const componentStatus = document.getElementById('componentStatus');
-    const framesStatus = document.getElementById('framesStatus');
-    
-    const selectComponentBtn = document.getElementById('selectComponentBtn');
-    const selectFramesBtn = document.getElementById('selectFramesBtn');
-    const backToStep1Btn = document.getElementById('backToStep1Btn');
-    const backToStep2Btn = document.getElementById('backToStep2Btn');
-    const applyChangesBtn = document.getElementById('applyChangesBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    
-    const directionSelect = document.getElementById('direction');
-    const gapInput = document.getElementById('gap');
-    const paddingInput = document.getElementById('padding');
-    
-    // Set up position selector
-    const positions = document.querySelectorAll('.position-option');
-    positions.forEach(pos => {
-      pos.addEventListener('click', () => {
-        positions.forEach(p => p.classList.remove('selected'));
-        pos.classList.add('selected');
-        
-        const positionValue = pos.dataset.position;
-        if (positionValue.includes('top')) {
-          selectedPosition = 'top';
-        } else if (positionValue.includes('right')) {
-          selectedPosition = 'right';
-        } else if (positionValue.includes('bottom')) {
-          selectedPosition = 'bottom';
-        } else if (positionValue.includes('left')) {
-          selectedPosition = 'left';
-        }
-      });
-    });
-    
-    // Set default position
-    const defaultPosition = document.querySelector('[data-position="right"]');
-    if (defaultPosition) {
-      defaultPosition.classList.add('selected');
+
+  <!-- Step 1: Select Component -->
+  <div class="card" id="step1Card">
+    <h3>Select Component</h3>
+    <p>First, select the component or frame you want to add to your frames.</p>
+    <div class="status" id="componentStatus">No component selected yet</div>
+    <div class="button-row">
+      <button id="selectComponentBtn">Select Component</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Select Frames -->
+  <div class="card" id="step2Card" style="display: none;">
+    <h3>Select Frames to Modify</h3>
+    <p>Now, select the frames you want to modify.</p>
+    <div class="status" id="framesStatus">No frames selected yet</div>
+    <div class="button-row">
+      <button class="button-secondary" id="backToStep1Btn">Back</button>
+      <button id="selectFramesBtn">Select Frames</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Configure Auto Layout -->
+  <div class="card" id="step3Card" style="display: none;">
+    <h3>Configure Auto Layout</h3>
+
+    <div class="form-group">
+      <label>Component Position</label>
+      <div class="position-selector">
+        <div></div>
+        <div class="position-option" data-position="top"></div>
+        <div></div>
+
+        <div class="position-option" data-position="left"></div>
+        <div class="position-center">Frame</div>
+        <div class="position-option" data-position="right"></div>
+
+        <div></div>
+        <div class="position-option" data-position="bottom"></div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="form-group" style="display: none;">
+      <label>Auto Layout Direction</label>
+      <select id="direction">
+        <option value="HORIZONTAL">Horizontal</option>
+        <option value="VERTICAL">Vertical</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Gap Between Items (px)</label>
+      <input type="number" id="gap" value="8" min="0">
+    </div>
+
+    <div class="form-group">
+      <label>Padding (px)</label>
+      <div class="padding-controls">
+        <div class="padding-row" id="groupedPaddingRow">
+          <div class="padding-input-group">
+            <div class="padding-icon">⊞</div>
+            <input type="number" class="padding-input" id="paddingHorizontal" value="16" min="0"
+              placeholder="Left & Right">
+          </div>
+          <div class="padding-input-group">
+            <div class="padding-icon">⊟</div>
+            <input type="number" class="padding-input" id="paddingVertical" value="16" min="0"
+              placeholder="Top & Bottom">
+          </div>
+          <div class="padding-toggle" id="paddingToggle">
+            <svg viewBox="0 0 16 16" fill="currentColor">
+              <path d="M2 2h12v12H2V2zm1 1v10h10V3H3zm2 2h6v6H5V5zm1 1v4h4V6H6z" />
+            </svg>
+          </div>
+        </div>
+        <div class="padding-row" id="individualPaddingRow" style="display: none;">
+          <div class="individual-padding" id="individualPadding">
+            <div class="padding-input-group">
+              <div class="padding-icon">↑</div>
+              <input type="number" class="padding-input" id="paddingTop" value="16" min="0" placeholder="Top">
+            </div>
+            <div class="padding-input-group">
+              <div class="padding-icon">→</div>
+              <input type="number" class="padding-input" id="paddingRight" value="16" min="0" placeholder="Right">
+            </div>
+            <div class="padding-input-group">
+              <div class="padding-icon">↓</div>
+              <input type="number" class="padding-input" id="paddingBottom" value="16" min="0" placeholder="Bottom">
+            </div>
+            <div class="padding-input-group">
+              <div class="padding-icon">←</div>
+              <input type="number" class="padding-input" id="paddingLeft" value="16" min="0" placeholder="Left">
+            </div>
+          </div>
+          <div class="padding-toggle" id="paddingToggleIndividual">
+            <svg viewBox="0 0 16 16" fill="currentColor">
+              <path d="M2 2h12v12H2V2zm1 1v10h10V3H3zm2 2h6v6H5V5zm1 1v4h4V6H6z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button class="button-secondary" id="backToStep2Btn">Back</button>
+      <button id="applyChangesBtn">Apply Changes</button>
+    </div>
+  </div>
+
+  <!-- Success State -->
+  <div class="card" id="successCard" style="display: none;">
+    <div class="success-message">
+      <div class="icon">✓</div>
+      <h3>Changes Applied Successfully!</h3>
+      <p>All frames have been wrapped and components added according to your settings.</p>
+      <button id="resetBtn" style="margin-top: 16px;">Start Over</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentStep = 0;
+  let selectedPosition = 'right';
+
+  // Get all DOM elements
+  const step1Circle = document.getElementById('step1');
+  const step2Circle = document.getElementById('step2');
+  const step3Circle = document.getElementById('step3');
+  const line1 = document.getElementById('line1');
+  const line2 = document.getElementById('line2');
+
+  const step1Card = document.getElementById('step1Card');
+  const step2Card = document.getElementById('step2Card');
+  const step3Card = document.getElementById('step3Card');
+  const successCard = document.getElementById('successCard');
+
+  const componentStatus = document.getElementById('componentStatus');
+  const framesStatus = document.getElementById('framesStatus');
+
+  const selectComponentBtn = document.getElementById('selectComponentBtn');
+  const selectFramesBtn = document.getElementById('selectFramesBtn');
+  const backToStep1Btn = document.getElementById('backToStep1Btn');
+  const backToStep2Btn = document.getElementById('backToStep2Btn');
+  const applyChangesBtn = document.getElementById('applyChangesBtn');
+  const resetBtn = document.getElementById('resetBtn');
+
+  const directionSelect = document.getElementById('direction');
+  const gapInput = document.getElementById('gap');
+
+  // Padding controls
+  const groupedPaddingRow = document.getElementById('groupedPaddingRow');
+  const paddingHorizontal = document.getElementById('paddingHorizontal');
+  const paddingVertical = document.getElementById('paddingVertical');
+  const paddingToggle = document.getElementById('paddingToggle');
+  const individualPaddingRow = document.getElementById('individualPaddingRow');
+  const individualPadding = document.getElementById('individualPadding');
+  const paddingToggleIndividual = document.getElementById('paddingToggleIndividual');
+  const paddingTop = document.getElementById('paddingTop');
+  const paddingRight = document.getElementById('paddingRight');
+  const paddingBottom = document.getElementById('paddingBottom');
+  const paddingLeft = document.getElementById('paddingLeft');
+
+  let individualPaddingMode = false;
+
+  // Function to update direction based on position
+  function updateDirectionBasedOnPosition(position) {
+    if (position === 'left' || position === 'right') {
+      directionSelect.value = 'HORIZONTAL';
+    } else if (position === 'top' || position === 'bottom') {
+      directionSelect.value = 'VERTICAL';
     }
-    
-    // Event listeners
-    selectComponentBtn.addEventListener('click', () => {
-      parent.postMessage({ pluginMessage: { type: 'startStep1' } }, '*');
-    });
-    
-    selectFramesBtn.addEventListener('click', () => {
-      parent.postMessage({ pluginMessage: { type: 'startStep2' } }, '*');
-    });
-    
-    backToStep1Btn.addEventListener('click', () => {
-      updateStep(1);
-    });
-    
-    backToStep2Btn.addEventListener('click', () => {
-      updateStep(2);
-    });
-    
-    applyChangesBtn.addEventListener('click', () => {
-      const config = {
-        position: selectedPosition,
-        direction: directionSelect.value,
-        gap: parseInt(gapInput.value, 10),
-        padding: parseInt(paddingInput.value, 10)
+  }
+
+  // Padding controls functionality
+  function togglePaddingMode() {
+    individualPaddingMode = !individualPaddingMode;
+
+    if (individualPaddingMode) {
+      // Hide grouped inputs and show individual inputs
+      groupedPaddingRow.style.display = 'none';
+      individualPaddingRow.style.display = 'flex';
+      individualPadding.classList.add('active');
+      paddingToggleIndividual.classList.add('active');
+
+      // Sync values from grouped to individual
+      paddingTop.value = paddingVertical.value;
+      paddingBottom.value = paddingVertical.value;
+      paddingLeft.value = paddingHorizontal.value;
+      paddingRight.value = paddingHorizontal.value;
+    } else {
+      // Show grouped inputs and hide individual inputs
+      groupedPaddingRow.style.display = 'flex';
+      individualPaddingRow.style.display = 'none';
+      individualPadding.classList.remove('active');
+      paddingToggleIndividual.classList.remove('active');
+
+      // Sync values from individual to grouped
+      paddingHorizontal.value = paddingLeft.value;
+      paddingVertical.value = paddingTop.value;
+    }
+  }
+
+  function getPaddingConfig() {
+    if (individualPaddingMode) {
+      return {
+        top: parseInt(paddingTop.value, 10),
+        right: parseInt(paddingRight.value, 10),
+        bottom: parseInt(paddingBottom.value, 10),
+        left: parseInt(paddingLeft.value, 10)
       };
-      
-      parent.postMessage({ pluginMessage: { type: 'applyChanges', config } }, '*');
-    });
-    
-    resetBtn.addEventListener('click', () => {
-      parent.postMessage({ pluginMessage: { type: 'reset' } }, '*');
-    });
-    
-    // Listen for messages from the plugin
-    window.onmessage = (event) => {
-      const message = event.data.pluginMessage;
-      
-      if (!message) return;
-      
-      if (message.type === 'updateStep') {
-        updateStep(message.step);
-      }
-      else if (message.type === 'componentSelected') {
-        componentStatus.textContent = `Selected: ${message.name}`;
-        updateStep(2);
-      }
-      else if (message.type === 'framesSelected') {
-        framesStatus.textContent = `Selected: ${message.count} frames`;
-        updateStep(3);
-      }
-    };
-    
-    // Update UI based on current step
-    function updateStep(step) {
-      currentStep = step;
-      
-      // Update step circles
-      step1Circle.className = 'step-circle';
-      step2Circle.className = 'step-circle';
-      step3Circle.className = 'step-circle';
-      line1.className = 'step-line';
-      line2.className = 'step-line';
-      
-      // Hide all cards
-      step1Card.style.display = 'none';
-      step2Card.style.display = 'none';
-      step3Card.style.display = 'none';
-      successCard.style.display = 'none';
-      
-      if (step === 0) {
-        step1Card.style.display = 'block';
-        step1Circle.className = 'step-circle active';
-      }
-      else if (step === 1) {
-        step1Card.style.display = 'block';
-        step1Circle.className = 'step-circle active';
-      }
-      else if (step === 2) {
-        step2Card.style.display = 'block';
-        step1Circle.className = 'step-circle completed';
-        step2Circle.className = 'step-circle active';
-        line1.className = 'step-line completed';
-      }
-      else if (step === 3) {
-        step3Card.style.display = 'block';
-        step1Circle.className = 'step-circle completed';
-        step2Circle.className = 'step-circle completed';
-        step3Circle.className = 'step-circle active';
-        line1.className = 'step-line completed';
-        line2.className = 'step-line completed';
-      }
-      else if (step === 4) {
-        successCard.style.display = 'block';
-        step1Circle.className = 'step-circle completed';
-        step2Circle.className = 'step-circle completed';
-        step3Circle.className = 'step-circle completed';
-        line1.className = 'step-line completed';
-        line2.className = 'step-line completed';
-      }
+    } else {
+      const horizontal = parseInt(paddingHorizontal.value, 10);
+      const vertical = parseInt(paddingVertical.value, 10);
+      return {
+        top: vertical,
+        right: horizontal,
+        bottom: vertical,
+        left: horizontal
+      };
     }
-    
-    // Initialize UI
-    updateStep(0);
-  </script>
+  }
+
+  // Set up position selector
+  const positions = document.querySelectorAll('.position-option');
+  positions.forEach(pos => {
+    pos.addEventListener('click', () => {
+      positions.forEach(p => p.classList.remove('selected'));
+      pos.classList.add('selected');
+      selectedPosition = pos.dataset.position;
+      updateDirectionBasedOnPosition(selectedPosition);
+    });
+  });
+
+  // Set default position
+  const defaultPosition = document.querySelector('[data-position="right"]');
+  if (defaultPosition) {
+    defaultPosition.classList.add('selected');
+    updateDirectionBasedOnPosition('right');
+  }
+
+  // Set up padding toggles
+  paddingToggle.addEventListener('click', togglePaddingMode);
+  paddingToggleIndividual.addEventListener('click', togglePaddingMode);
+
+  // Event listeners
+  selectComponentBtn.addEventListener('click', () => {
+    parent.postMessage({ pluginMessage: { type: 'startStep1' } }, '*');
+  });
+
+  selectFramesBtn.addEventListener('click', () => {
+    parent.postMessage({ pluginMessage: { type: 'startStep2' } }, '*');
+  });
+
+  backToStep1Btn.addEventListener('click', () => {
+    updateStep(1);
+  });
+
+  backToStep2Btn.addEventListener('click', () => {
+    updateStep(2);
+  });
+
+  applyChangesBtn.addEventListener('click', () => {
+    const paddingConfig = getPaddingConfig();
+    const config = {
+      position: selectedPosition,
+      direction: directionSelect.value,
+      gap: parseInt(gapInput.value, 10),
+      padding: paddingConfig
+    };
+
+    parent.postMessage({ pluginMessage: { type: 'applyChanges', config } }, '*');
+  });
+
+  resetBtn.addEventListener('click', () => {
+    parent.postMessage({ pluginMessage: { type: 'reset' } }, '*');
+  });
+
+  // Listen for messages from the plugin
+  window.onmessage = (event) => {
+    const message = event.data.pluginMessage;
+
+    if (!message) return;
+
+    if (message.type === 'updateStep') {
+      updateStep(message.step);
+    }
+    else if (message.type === 'componentSelected') {
+      componentStatus.textContent = `Selected: ${message.name}`;
+      updateStep(2);
+    }
+    else if (message.type === 'framesSelected') {
+      framesStatus.textContent = `Selected: ${message.count} frames`;
+      updateStep(3);
+    }
+  };
+
+  // Update UI based on current step
+  function updateStep(step) {
+    currentStep = step;
+
+    // Update step circles
+    step1Circle.className = 'step-circle';
+    step2Circle.className = 'step-circle';
+    step3Circle.className = 'step-circle';
+    line1.className = 'step-line';
+    line2.className = 'step-line';
+
+    // Hide all cards
+    step1Card.style.display = 'none';
+    step2Card.style.display = 'none';
+    step3Card.style.display = 'none';
+    successCard.style.display = 'none';
+
+    if (step === 0) {
+      step1Card.style.display = 'block';
+      step1Circle.className = 'step-circle active';
+    }
+    else if (step === 1) {
+      step1Card.style.display = 'block';
+      step1Circle.className = 'step-circle active';
+    }
+    else if (step === 2) {
+      step2Card.style.display = 'block';
+      step1Circle.className = 'step-circle completed';
+      step2Circle.className = 'step-circle active';
+      line1.className = 'step-line completed';
+    }
+    else if (step === 3) {
+      step3Card.style.display = 'block';
+      step1Circle.className = 'step-circle completed';
+      step2Circle.className = 'step-circle completed';
+      step3Circle.className = 'step-circle active';
+      line1.className = 'step-line completed';
+      line2.className = 'step-line completed';
+    }
+    else if (step === 4) {
+      successCard.style.display = 'block';
+      step1Circle.className = 'step-circle completed';
+      step2Circle.className = 'step-circle completed';
+      step3Circle.className = 'step-circle completed';
+      line1.className = 'step-line completed';
+      line2.className = 'step-line completed';
+    }
+  }
+
+  // Initialize UI
+  updateStep(0);
+</script>

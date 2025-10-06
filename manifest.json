@@ -1,12 +1,12 @@
 {
-    "name": "Component Wrapper",
+    "name": "Wrap-wrap-inprogress",
     "id": "component-wrapper",
     "api": "1.0.0",
     "main": "code.js",
     "ui": "ui.html",
     "menu": [
       {
-        "name": "Component Wrapper",
+        "name": "Wrap-wrap-inprogress",
         "command": "main"
       }
     ],
