@@ -14,7 +14,7 @@ figma.ui.onmessage = async (msg) => {
     currentStep = 1;
     figma.notify("Select a component/frame to add to your frames");
     figma.ui.postMessage({ type: 'updateStep', step: 1 });
-    const selection = await figma.currentPage.selection;
+    const selection = figma.currentPage.selection;
     
     if (selection.length === 0) {
       figma.notify("Please select a component or frame first");
@@ -32,7 +32,7 @@ figma.ui.onmessage = async (msg) => {
     figma.notify("Now select the frames you want to modify");
     figma.ui.postMessage({ type: 'updateStep', step: 2 });
     
-    const selection = await figma.currentPage.selection;
+    const selection = figma.currentPage.selection;
     if (selection.length === 0) {
       figma.notify("Please select at least one frame to modify");
       return;
@@ -87,17 +87,17 @@ async function applyChangesToFrames(config) {
     parentFrame.name = `Frame ${i + 1}`;
     parentFrame.x = frame.x;
     parentFrame.y = frame.y;
-    parentFrame.resize(frame.width + config.padding * 2, frame.height + config.padding * 2);
+    parentFrame.resize(frame.width + config.padding.left + config.padding.right, frame.height + config.padding.top + config.padding.bottom);
     
     // Set up auto layout
     parentFrame.layoutMode = config.direction === 'HORIZONTAL' ? 'HORIZONTAL' : 'VERTICAL';
     parentFrame.primaryAxisAlignItems = 'CENTER';
     parentFrame.counterAxisAlignItems = 'CENTER';
     parentFrame.itemSpacing = config.gap;
-    parentFrame.paddingLeft = config.padding;
-    parentFrame.paddingRight = config.padding;
-    parentFrame.paddingTop = config.padding;
-    parentFrame.paddingBottom = config.padding;
+    parentFrame.paddingLeft = config.padding.left;
+    parentFrame.paddingRight = config.padding.right;
+    parentFrame.paddingTop = config.padding.top;
+    parentFrame.paddingBottom = config.padding.bottom;
     
     // Clone the original component
     const componentClone = selectedMainComponent.clone();
